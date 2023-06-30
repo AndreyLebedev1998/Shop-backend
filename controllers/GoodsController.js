@@ -6,6 +6,7 @@ export const createGood = async (req, res) => {
       name: req.body.name,
       imageUrl: req.body.imageUrl,
       price: req.body.price,
+      categoryId: req.body.categoryId,
     });
 
     const good = await doc.save();

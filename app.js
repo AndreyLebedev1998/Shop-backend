@@ -9,6 +9,20 @@ import {
   getOneGood,
 } from "./controllers/GoodsController.js";
 
+import {
+  register,
+  getMe,
+  authorization,
+} from "./controllers/UserController.js";
+
+import {
+  registerValidation,
+  authorizationValidation,
+} from "./validations/userValidation.js";
+
+import { validationErrors } from "./utils/validationErrors.js";
+import { checkAuth } from "./utils/checkAuth.js";
+
 mongoose
   .connect(
     "mongodb+srv://andreylebedev1998:whiteman1998@cluster0.kdqj15a.mongodb.net/dirGoods"
@@ -30,6 +44,15 @@ app.get("/", (req, res) => {
 app.post("/goods", goodValidation, createGood);
 app.get("/goods", getAllGoods);
 app.get("/goods/:id", getOneGood);
+
+app.post("/auth/register", registerValidation, validationErrors, register);
+app.get("/auth/me", checkAuth, getMe);
+app.post(
+  "/auth/login",
+  authorizationValidation,
+  validationErrors,
+  authorization
+);
 
 app.listen(PORT, (err) => {
   if (err) {
