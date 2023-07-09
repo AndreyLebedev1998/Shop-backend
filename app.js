@@ -4,15 +4,22 @@ import cors from "cors";
 
 import { goodValidation } from "./validations/goodValidation.js";
 import {
+  buyOneGood,
   createGood,
   getAllGoods,
   getOneGood,
+  countPlusQty,
+  getBasketUser,
+  countMinusQty,
+  deleteOneGood,
+  update,
 } from "./controllers/GoodsController.js";
 
 import {
   register,
   getMe,
   authorization,
+  getMeBasket,
 } from "./controllers/UserController.js";
 
 import {
@@ -53,6 +60,13 @@ app.post(
   validationErrors,
   authorization
 );
+
+app.post("/auth/basket/:id", checkAuth, buyOneGood);
+app.patch("/auth/basket/plus/:id", checkAuth, countPlusQty);
+app.patch("/auth/basket/minus/:id", checkAuth, countMinusQty);
+app.patch("/auth/basket/delete/:id", checkAuth, deleteOneGood);
+app.get("/auth/basket/:id", checkAuth, getBasketUser);
+app.patch("/auth/basket/update/:id", update);
 
 app.listen(PORT, (err) => {
   if (err) {

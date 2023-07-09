@@ -14,10 +14,7 @@ const UserShema = mongoose.Schema({
     type: String,
     require: true,
   },
-  basket: {
-    type: Array,
-    require: true,
-  },
+  basket: Array,
 });
 
 export default mongoose.model("User", UserShema);
