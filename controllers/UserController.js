@@ -108,23 +108,35 @@ export const authorization = async (req, res) => {
   }
 };
 
-export const getMeBasket = async (req, res) => {
+export const updateUser = async (req, res) => {
   try {
-    const user = await UserModel.findById(req.userId);
+    const userId = req.params.id;
 
-    if (!user) {
-      return res.status(404).json({
-        message: "Пользователь не найден",
-      });
-    }
+    const doc = await UserModel.findById(userId);
 
-    const { passwordHash, ...userData } = user._doc;
+    const updateParams = {
+      fullName: req.body.fullName,
+      lastName: req.body.lastName,
+      gender: req.body.gender,
+      adress: req.body.adress,
+      telephone: req.body.telephone,
+    };
 
-    res.json(userData);
+    await doc.updateOne({
+      fullName: req.body.fullName,
+      lastName: req.body.lastName,
+      gender: req.body.gender,
+      adress: req.body.adress,
+      telephone: req.body.telephone,
+    });
+
+    res.json({
+      success: true,
+    });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Нет доступа",
+    console.error(error);
+    return res.status(400).json({
+      message: "Не удалось обновить данные",
     });
   }
 };

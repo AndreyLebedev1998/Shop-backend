@@ -15,6 +15,22 @@ const UserShema = mongoose.Schema({
     require: true,
   },
   basket: Array,
+  lastName: {
+    type: String,
+    require: false,
+  },
+  gender: {
+    type: String,
+    require: false,
+  },
+  adress: {
+    type: String,
+    require: false,
+  },
+  telephone: {
+    type: String,
+    require: false,
+  },
 });
 
 export default mongoose.model("User", UserShema);

@@ -19,12 +19,13 @@ import {
   register,
   getMe,
   authorization,
-  getMeBasket,
+  updateUser,
 } from "./controllers/UserController.js";
 
 import {
   registerValidation,
   authorizationValidation,
+  updateUserValidation,
 } from "./validations/userValidation.js";
 
 import { validationErrors } from "./utils/validationErrors.js";
@@ -60,13 +61,13 @@ app.post(
   validationErrors,
   authorization
 );
+app.patch("/auth/update/me/:id", checkAuth, updateUserValidation, updateUser);
 
 app.post("/auth/basket/:id", checkAuth, buyOneGood);
 app.patch("/auth/basket/plus/:id", checkAuth, countPlusQty);
 app.patch("/auth/basket/minus/:id", checkAuth, countMinusQty);
 app.patch("/auth/basket/delete/:id", checkAuth, deleteOneGood);
 app.get("/auth/basket/:id", checkAuth, getBasketUser);
-app.patch("/auth/basket/update/:id", update);
 
 app.listen(PORT, (err) => {
   if (err) {
