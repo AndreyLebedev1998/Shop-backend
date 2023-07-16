@@ -17,7 +17,7 @@ export const authorizationValidation = [
 
 export const updateUserValidation = [
   body("fullName", "Укажите корректное имя").isLength({ min: 3 }),
-  body("lastName", "Укажите корректную фамилию").isLength({ min: 3 }),
+  /* body("lastName", "Укажите корректную фамилию").isLength({ min: 3 }),
   body("telephone", "Укажите корректный телефон").isLength({ min: 9 }),
-  body("adress", "Укажите корректный адресс").isLength({ min: 10 }),
+  body("adress", "Укажите корректный адресс").isLength({ min: 10 }), */
 ];

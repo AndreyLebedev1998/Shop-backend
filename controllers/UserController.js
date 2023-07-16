@@ -114,14 +114,6 @@ export const updateUser = async (req, res) => {
 
     const doc = await UserModel.findById(userId);
 
-    const updateParams = {
-      fullName: req.body.fullName,
-      lastName: req.body.lastName,
-      gender: req.body.gender,
-      adress: req.body.adress,
-      telephone: req.body.telephone,
-    };
-
     await doc.updateOne({
       fullName: req.body.fullName,
       lastName: req.body.lastName,
@@ -137,6 +129,48 @@ export const updateUser = async (req, res) => {
     console.error(error);
     return res.status(400).json({
       message: "Не удалось обновить данные",
+    });
+  }
+};
+
+export const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const doc = await UserModel.findById(userId);
+
+    await doc.deleteOne({
+      id: doc._id,
+    });
+
+    res.json({
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Не удалось удалить аккаунт",
+    });
+  }
+};
+
+export const update = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const doc = await UserModel.findById(userId);
+
+    await doc.updateOne({
+      admin: true,
+    });
+
+    res.json({
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Не удалось обновить аккаунт",
     });
   }
 };

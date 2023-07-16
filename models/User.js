@@ -31,6 +31,10 @@ const UserShema = mongoose.Schema({
     type: String,
     require: false,
   },
+  admin: {
+    type: Boolean,
+    require: false,
+  },
 });
 
 export default mongoose.model("User", UserShema);

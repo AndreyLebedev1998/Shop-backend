@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import nodemailer from "nodemailer";
 
 import { goodValidation } from "./validations/goodValidation.js";
 import {
@@ -12,7 +13,6 @@ import {
   getBasketUser,
   countMinusQty,
   deleteOneGood,
-  update,
 } from "./controllers/GoodsController.js";
 
 import {
@@ -20,6 +20,8 @@ import {
   getMe,
   authorization,
   updateUser,
+  deleteAccount,
+  update,
 } from "./controllers/UserController.js";
 
 import {
@@ -62,6 +64,8 @@ app.post(
   authorization
 );
 app.patch("/auth/update/me/:id", checkAuth, updateUserValidation, updateUser);
+app.delete("/auth/delete/:id", checkAuth, deleteAccount);
+app.patch("/auth/me/:id", update);
 
 app.post("/auth/basket/:id", checkAuth, buyOneGood);
 app.patch("/auth/basket/plus/:id", checkAuth, countPlusQty);
@@ -69,9 +73,33 @@ app.patch("/auth/basket/minus/:id", checkAuth, countMinusQty);
 app.patch("/auth/basket/delete/:id", checkAuth, deleteOneGood);
 app.get("/auth/basket/:id", checkAuth, getBasketUser);
 
+/* const transporter = nodemailer.createTransport({
+  host: "smtp.mail.ru",
+  port: 465,
+  secure: true,
+  auth: {
+    user: "lera.komarova.00@inbox.ru",
+    pass: "T8ddq5fduyPuBMHUZZqE",
+  },
+});
+
+const hello = "Пососёешь писю?";
+
+const mailOptons = {
+  from: "lera.komarova.00@inbox.ru",
+  to: "andrej_lebedev98@mail.ru",
+  subject: "Заказ",
+  text: "Письмо пришло",
+  html: `<h4>${hello}</h4>`,
+};
+
+transporter.sendMail(mailOptons); */
+
 app.listen(PORT, (err) => {
   if (err) {
     console.error(err);
   }
   console.log(`Server OK http://localhost:${PORT}`);
 });
+
+//dima@mail.ru
