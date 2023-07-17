@@ -29,6 +29,18 @@ const DeliveryShema = new mongoose.Schema({
     type: Array,
     require: true,
   },
+  totalPrice: {
+    type: String,
+    require: true,
+  },
+  totalQty: {
+    type: String,
+    require: true,
+  },
+  status: {
+    type: String,
+    require: true,
+  },
 });
 
-export default mongoose.Model("Delivery", DeliveryShema);
+export default mongoose.model("Delivery", DeliveryShema);

@@ -1,7 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import nodemailer from "nodemailer";
 
 import { goodValidation } from "./validations/goodValidation.js";
 import {
@@ -13,6 +12,7 @@ import {
   getBasketUser,
   countMinusQty,
   deleteOneGood,
+  deleteAllGoods,
 } from "./controllers/GoodsController.js";
 
 import {
@@ -23,6 +23,14 @@ import {
   deleteAccount,
   update,
 } from "./controllers/UserController.js";
+
+import {
+  completedDelivery,
+  createDelivery,
+  framedDelivery,
+  getAllDelivery,
+  getOneDelivery,
+} from "./controllers/DeliveryController.js";
 
 import {
   registerValidation,
@@ -51,10 +59,12 @@ app.get("/", (req, res) => {
   res.send("This is shop");
 });
 
+//Запросы на товары
 app.post("/goods", goodValidation, createGood);
 app.get("/goods", getAllGoods);
 app.get("/goods/:id", getOneGood);
 
+//Запросы на действия с пользователем
 app.post("/auth/register", registerValidation, validationErrors, register);
 app.get("/auth/me", checkAuth, getMe);
 app.post(
@@ -67,33 +77,20 @@ app.patch("/auth/update/me/:id", checkAuth, updateUserValidation, updateUser);
 app.delete("/auth/delete/:id", checkAuth, deleteAccount);
 app.patch("/auth/me/:id", update);
 
+//Запросы на действия с корзиной
 app.post("/auth/basket/:id", checkAuth, buyOneGood);
 app.patch("/auth/basket/plus/:id", checkAuth, countPlusQty);
 app.patch("/auth/basket/minus/:id", checkAuth, countMinusQty);
 app.patch("/auth/basket/delete/:id", checkAuth, deleteOneGood);
 app.get("/auth/basket/:id", checkAuth, getBasketUser);
+app.patch("/auth/basket/deleteAll/:id", checkAuth, deleteAllGoods);
 
-/* const transporter = nodemailer.createTransport({
-  host: "smtp.mail.ru",
-  port: 465,
-  secure: true,
-  auth: {
-    user: "lera.komarova.00@inbox.ru",
-    pass: "T8ddq5fduyPuBMHUZZqE",
-  },
-});
-
-const hello = "Пососёешь писю?";
-
-const mailOptons = {
-  from: "lera.komarova.00@inbox.ru",
-  to: "andrej_lebedev98@mail.ru",
-  subject: "Заказ",
-  text: "Письмо пришло",
-  html: `<h4>${hello}</h4>`,
-};
-
-transporter.sendMail(mailOptons); */
+//Запросы на действия с доставкой
+app.post("/delivery", checkAuth, createDelivery);
+app.get("/delivery", checkAuth, getAllDelivery);
+app.get("/delivery/:id", checkAuth, getOneDelivery);
+app.patch("/delivery/framed/:id", checkAuth, framedDelivery);
+app.patch("/delivery/completed/:id", checkAuth, completedDelivery);
 
 app.listen(PORT, (err) => {
   if (err) {

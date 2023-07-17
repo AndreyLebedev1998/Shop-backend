@@ -181,8 +181,7 @@ export const deleteOneGood = async (req, res) => {
             id: req.body.id,
           },
         },
-      },
-      { safe: true, multi: true }
+      }
     );
 
     res.json({
@@ -216,6 +215,37 @@ export const update = async (req, res) => {
     console.error(error);
     return res.status(500).json({
       message: "Не удалось обновить товар",
+    });
+  }
+};
+
+export const deleteAllGoods = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const doc = await UserModel.findById(userId);
+
+    await doc.updateOne({
+      $set: {
+        basket: [],
+      },
+    });
+
+    /*  await doc.updateOne({
+      $pullAll: {
+        basket: {
+          $in: req.body,
+        },
+      },
+    }); */
+
+    res.json({
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: "Не удалось отчистить корзину",
     });
   }
 };
