@@ -22,13 +22,18 @@ import {
   updateUser,
   deleteAccount,
   update,
+  getAllUsersDelivery,
 } from "./controllers/UserController.js";
 
 import {
+  addDeliveryInUser,
   completedDelivery,
   createDelivery,
+  deleteDelivery,
+  deliveryUser,
   framedDelivery,
   getAllDelivery,
+  getAllDeliveryUser,
   getOneDelivery,
 } from "./controllers/DeliveryController.js";
 
@@ -88,9 +93,14 @@ app.patch("/auth/basket/deleteAll/:id", checkAuth, deleteAllGoods);
 //Запросы на действия с доставкой
 app.post("/delivery", checkAuth, createDelivery);
 app.get("/delivery", checkAuth, getAllDelivery);
-app.get("/delivery/:id", checkAuth, getOneDelivery);
-app.patch("/delivery/framed/:id", checkAuth, framedDelivery);
-app.patch("/delivery/completed/:id", checkAuth, completedDelivery);
+app.patch("/deliveryOne", checkAuth, getOneDelivery);
+app.patch("/delivery/framed", checkAuth, framedDelivery);
+app.patch("/delivery/completed", checkAuth, completedDelivery);
+app.patch("/delivery/delete", checkAuth, deleteDelivery);
+app.patch("/delivery/addDelivery/:id", checkAuth, addDeliveryInUser);
+app.get("/delivery/userDelivery/:id", checkAuth, getAllDeliveryUser);
+app.get("/allUsersDelivery", checkAuth, getAllUsersDelivery);
+app.get("/deliveryUser/:id", checkAuth, deliveryUser);
 
 app.listen(PORT, (err) => {
   if (err) {

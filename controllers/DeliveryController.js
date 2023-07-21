@@ -1,4 +1,5 @@
 import DeliveryModel from "../models/Delivery.js";
+import UserModel from "../models/User.js";
 
 export const createDelivery = async (req, res) => {
   try {
@@ -41,9 +42,16 @@ export const getAllDelivery = async (req, res) => {
 
 export const getOneDelivery = async (req, res) => {
   try {
-    const deliveryId = req.params.id;
+    const userId = req.body.authId;
 
-    const doc = await DeliveryModel.findById(deliveryId);
+    const doc = await UserModel.findById(
+      {
+        _id: userId,
+      },
+      {
+        delivery: { $elemMatch: { id: req.body.id } },
+      }
+    );
 
     res.json(doc);
   } catch (error) {
@@ -56,17 +64,47 @@ export const getOneDelivery = async (req, res) => {
 
 export const framedDelivery = async (req, res) => {
   try {
-    const deliveryId = req.params.id;
+    const userId = req.body.authId;
 
-    const doc = await DeliveryModel.findById(deliveryId);
+    const doc = await UserModel.findOneAndUpdate(
+      {
+        _id: userId,
+        "delivery.id": req.body.id,
+      },
+      {
+        $set: {
+          "delivery.$.status": "Оформлен",
+        },
+      }
+    );
 
-    await doc.updateOne({
-      status: "Оформлен",
+    res.json(doc);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Ошибка при обновлении заказа",
     });
+  }
+};
+//Свердловская область, Новоуральск, Автозаводская улица, 21
 
-    res.json({
-      success: true,
-    });
+export const completedDelivery = async (req, res) => {
+  try {
+    const userId = req.body.authId;
+
+    const doc = await UserModel.findOneAndUpdate(
+      {
+        _id: userId,
+        "delivery.id": req.body.id,
+      },
+      {
+        $set: {
+          "delivery.$.status": "Выполнен",
+        },
+      }
+    );
+
+    res.json(doc);
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -75,14 +113,57 @@ export const framedDelivery = async (req, res) => {
   }
 };
 
-export const completedDelivery = async (req, res) => {
+export const deleteDelivery = async (req, res) => {
   try {
-    const deliveryId = req.params.id;
+    const userId = req.body.authId;
+    await UserModel.findOneAndUpdate(
+      {
+        _id: userId,
+      },
+      {
+        $pull: {
+          delivery: {
+            id: req.body.id,
+          },
+        },
+      }
+    );
 
-    const doc = await DeliveryModel.findById(deliveryId);
+    res.json({
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Не удалось отменить заказ",
+    });
+  }
+};
 
-    await doc.updateOne({
-      status: "Выполнен",
+export const addDeliveryInUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const delivery = {
+      authId: req.params.id,
+      id: req.body.id,
+      fullName: req.body.fullName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      adress: req.body.adress,
+      telephone: req.body.telephone,
+      delivery: req.body.delivery,
+      totalPrice: req.body.totalPrice,
+      totalQty: req.body.totalQty,
+      status: req.body.status,
+    };
+
+    const user = await UserModel.findById(userId);
+
+    await user.updateOne({
+      $push: {
+        delivery,
+      },
     });
 
     res.json({
@@ -91,7 +172,37 @@ export const completedDelivery = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      message: "Ошибка при обновлении заказа",
+      message: "Не удалось добавить заказы",
+    });
+  }
+};
+
+export const getAllDeliveryUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const doc = await UserModel.findById(userId);
+
+    res.json(doc.delivery);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Не удалось получить заказы",
+    });
+  }
+};
+
+export const deliveryUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const doc = await UserModel.findById(userId);
+
+    res.json(doc.delivery);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Ошибка при полученни доставок",
     });
   }
 };

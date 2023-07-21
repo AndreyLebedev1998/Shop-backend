@@ -231,14 +231,6 @@ export const deleteAllGoods = async (req, res) => {
       },
     });
 
-    /*  await doc.updateOne({
-      $pullAll: {
-        basket: {
-          $in: req.body,
-        },
-      },
-    }); */
-
     res.json({
       success: true,
     });

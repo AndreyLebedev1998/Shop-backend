@@ -13,6 +13,7 @@ export const register = async (req, res) => {
       email: req.body.email,
       passwordHash: hash,
       basket: [],
+      delivery: [],
     });
 
     const user = await doc.save();
@@ -118,7 +119,6 @@ export const updateUser = async (req, res) => {
       fullName: req.body.fullName,
       lastName: req.body.lastName,
       gender: req.body.gender,
-      adress: req.body.adress,
       telephone: req.body.telephone,
     });
 
@@ -161,7 +161,7 @@ export const update = async (req, res) => {
     const doc = await UserModel.findById(userId);
 
     await doc.updateOne({
-      admin: true,
+      delivery: [],
     });
 
     res.json({
@@ -171,6 +171,23 @@ export const update = async (req, res) => {
     console.error(error);
     return res.status(500).json({
       message: "Не удалось обновить аккаунт",
+    });
+  }
+};
+
+export const getAllUsersDelivery = async (req, res) => {
+  try {
+    const users = await UserModel.find().exec();
+
+    res.json(
+      users.map((el) => {
+        return el.delivery;
+      })
+    );
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Не удалось загрузить товары",
     });
   }
 };

@@ -14,16 +14,15 @@ const UserShema = mongoose.Schema({
     type: String,
     require: true,
   },
-  basket: Array,
+  basket: {
+    type: Array,
+    require: true,
+  },
   lastName: {
     type: String,
     require: false,
   },
   gender: {
-    type: String,
-    require: false,
-  },
-  adress: {
     type: String,
     require: false,
   },
@@ -34,6 +33,10 @@ const UserShema = mongoose.Schema({
   admin: {
     type: Boolean,
     require: false,
+  },
+  delivery: {
+    type: Array,
+    require: true,
   },
 });
 

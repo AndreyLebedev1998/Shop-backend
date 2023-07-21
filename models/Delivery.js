@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const DeliveryShema = new mongoose.Schema({
+  authId: {
+    type: String,
+    require: true,
+  },
   id: {
     type: String,
     require: true,
