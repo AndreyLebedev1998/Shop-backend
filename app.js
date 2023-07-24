@@ -28,11 +28,9 @@ import {
 import {
   addDeliveryInUser,
   completedDelivery,
-  createDelivery,
   deleteDelivery,
   deliveryUser,
   framedDelivery,
-  getAllDelivery,
   getAllDeliveryUser,
   getOneDelivery,
 } from "./controllers/DeliveryController.js";
@@ -78,7 +76,13 @@ app.post(
   validationErrors,
   authorization
 );
-app.patch("/auth/update/me/:id", checkAuth, updateUserValidation, updateUser);
+app.patch(
+  "/auth/update/me/:id",
+  updateUserValidation,
+  validationErrors,
+  checkAuth,
+  updateUser
+);
 app.delete("/auth/delete/:id", checkAuth, deleteAccount);
 app.patch("/auth/me/:id", update);
 
@@ -91,8 +95,6 @@ app.get("/auth/basket/:id", checkAuth, getBasketUser);
 app.patch("/auth/basket/deleteAll/:id", checkAuth, deleteAllGoods);
 
 //Запросы на действия с доставкой
-app.post("/delivery", checkAuth, createDelivery);
-app.get("/delivery", checkAuth, getAllDelivery);
 app.patch("/deliveryOne", checkAuth, getOneDelivery);
 app.patch("/delivery/framed", checkAuth, framedDelivery);
 app.patch("/delivery/completed", checkAuth, completedDelivery);
