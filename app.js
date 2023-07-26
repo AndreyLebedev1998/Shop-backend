@@ -45,10 +45,13 @@ import { validationErrors } from "./utils/validationErrors.js";
 import { checkAuth } from "./utils/checkAuth.js";
 
 const SERVER_IP_ADDRESS = "31.129.101.151";
-const uri = `mongodb://localhost:27017/dirGoods`;
+const uri = `mongodb://localhost:27017/`;
 
 mongoose
-  .connect(uri)
+  .connect(
+    /*  "mongodb+srv://andreylebedev1998:whiteman1998@cluster0.kdqj15a.mongodb.net/dirGoods" || */
+    uri
+  )
   .then(() => console.log("DB OK"))
   .catch((err) => console.error("DB error", err));
 
@@ -113,4 +116,3 @@ app.listen(PORT, (err) => {
 });
 
 //dima@mail.ru
-//whiteman1998
