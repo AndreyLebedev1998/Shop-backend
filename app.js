@@ -45,7 +45,7 @@ import { validationErrors } from "./utils/validationErrors.js";
 import { checkAuth } from "./utils/checkAuth.js";
 
 const SERVER_IP_ADDRESS = "31.129.101.151";
-const uri = `mongodb://localhost:27017/`;
+const uri = `mongodb://localhost:27017/dirGoods`;
 
 mongoose
   .connect(
@@ -57,7 +57,7 @@ mongoose
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+//app.use(cors());
 
 const PORT = 9000;
 app.use(express.static("images"));
