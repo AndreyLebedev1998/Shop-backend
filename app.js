@@ -108,7 +108,7 @@ app.get("/delivery/userDelivery/:id", checkAuth, getAllDeliveryUser);
 app.get("/allUsersDelivery", checkAuth, getAllUsersDelivery);
 app.get("/deliveryUser/:id", checkAuth, deliveryUser);
 
-app.listen(PORT, (err) => {
+app.listen(process.env.PORT || PORT, (err) => {
   if (err) {
     console.error(err);
   }
