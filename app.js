@@ -59,7 +59,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const PORT = 9002;
+const PORT = 3002;
 app.use(express.static("images"));
 
 app.get("/", (req, res) => {
